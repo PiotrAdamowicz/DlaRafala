@@ -5,10 +5,15 @@ export default function inputDate(props) {
   return (
     <div className={`${props.layout}`}>
       <div className="input-field">
-        <input type="text" id="date1" />
+        <input
+          value={props.value}
+          onChange={props.change}
+          type="text"
+          id="date1"
+        />
 
         {props.markupId ? (
-          <label htmlFor="date1" onChange={props.handleChange}>
+          <label htmlFor="date1">
             <MarkupId markupId={props.markupId} />
             {props.label}:
           </label>
