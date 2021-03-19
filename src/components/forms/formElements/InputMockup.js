@@ -1,7 +1,7 @@
 import React from "react";
 import MarkupId from "./MarkupId";
 
-export default function inputDate(props) {
+function inputMockup(props) {
   return (
     <div className={`${props.layout}`}>
       <div className="input-field">
@@ -22,3 +22,4 @@ export default function inputDate(props) {
     </div>
   );
 }
+export default inputMockup;
