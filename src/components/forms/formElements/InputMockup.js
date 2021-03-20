@@ -6,6 +6,7 @@ function inputMockup(props) {
     <div className={`${props.layout}`}>
       <div className="input-field">
         <input
+          disabled={props.disabled ? true : false}
           value={props.value}
           onChange={props.change}
           type="text"

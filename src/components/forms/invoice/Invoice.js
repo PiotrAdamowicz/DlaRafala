@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import InputMockup from "../formElements/InputMockup";
 import InvoiceType from "./InvoiceType";
+import CheckboxSelect from "../formElements/CheckboxSelect";
 
 const PreInvoice = (props) => {
-  //FIXME: Mockup date to be removed
+  //FIXME: initial values of state need to be removed; for now only invoice Type need initial value(not empty string)
   const [invoiceType, setInvoiceType] = useState("PRE");
   const [invoiceID, setInvoiceID] = useState("0000000001");
   const [taxDate, setTaxDate] = useState("11.11.1111");
@@ -11,11 +12,13 @@ const PreInvoice = (props) => {
   const [saleDate, setSaleDate] = useState("12.11.1111");
   const [buyerId, setBuyerId] = useState("000001");
   const [buyerName, setBuyerName] = useState("Jan Kowalski");
-  const [buyerAdress, setBuyerAdress] = useState(
+  const [buyerAdress, setBuyerAddress] = useState(
     "Malinowa 27, 15-120 Białystok"
   );
-  const [grossSale, setGrossSale] = useState("2000");
-  const [sale23, setSale23] = useState("");
+  const [grossSale, setGrossSale] = useState("");
+  const [netSale, setNetSale] = useState("");
+  const [sale23, setSale23] = useState("0");
+  const [salesType, setSaleType] = useState("23");
 
   const handleSubmit = (e) => {
     console.dir({
@@ -28,27 +31,53 @@ const PreInvoice = (props) => {
       buyerName,
       buyerAdress,
       grossSale,
+      netSale,
+      salesType,
     });
     e.preventDefault();
   };
 
   const handleChangeSimple = (e) => {
-    setInvoiceType(e.target.value);
-    setInvoiceID(e.target.value);
-    setTaxDate(e.target.value);
-    setIssueDate(e.target.value);
-    setSaleDate(e.target.value);
-    setBuyerId(e.target.value);
-    setBuyerName(e.target.value);
-    setBuyerAdress(e.target.value);
-    setGrossSale(e.target.value);
+    switch (e.target.name) {
+      case "invoiceType":
+        setInvoiceType(e.target.value);
+        break;
+      case "invoiceID":
+        setInvoiceID(e.target.value);
+        break;
+      case "taxDate":
+        setTaxDate(e.target.value);
+        break;
+      case "issueDate":
+        setIssueDate(e.target.value);
+        break;
+      case "saleDate":
+        setSaleDate(e.target.value);
+        break;
+      case "buyerId":
+        setBuyerId(e.target.value);
+        break;
+      case "buyerName":
+        setBuyerName(e.target.value);
+        break;
+      case "buyerAddress":
+        setBuyerAddress(e.target.value);
+        break;
+      case "saleType":
+        setSaleType(e.target.value);
+        break;
+      default:
+        break;
+    }
   };
+  //Calculated inputs, for esthetic purposes fixed to 3 decimals.
   const handleChangeCalculated = (e) => {
-    setSale23((grossSale * (100 / 123)).toFixed(3));
+    // setGrossSale(e.target.value);
+    // setSale23((grossSale * (100 / 123)).toFixed(3));
   };
 
   return (
-    <main>
+    <main className="row">
       <form action="" onSubmit={handleSubmit}>
         <section className="invoice-info">
           <div className="row">
@@ -122,16 +151,29 @@ const PreInvoice = (props) => {
           </div>
         </section>
         <section className="sell-info">
+          <h2 className="col s12">Sprzedaż udokumentowana</h2>
           <div className="row">
-            <h2 className="col s12">Sprzedaż udokumentowana</h2>
+            <InputMockup
+              value={netSale}
+              change={handleChangeCalculated}
+              name="netSale"
+              layout="col s12"
+              label="Wartość sprzedaży netto"
+              markupId="9"
+            />
+          </div>
+          <div className="row">
             <InputMockup
               value={grossSale}
-              change={handleChangeSimple}
+              change={handleChangeCalculated}
               name="grossSale"
               layout="col s12"
               label="Wartość sprzedaży brutto"
               markupId="9"
             />
+          </div>
+          <div className="row">
+            <CheckboxSelect change={handleChangeSimple} />
           </div>
           <div className="row">
             <InputMockup
