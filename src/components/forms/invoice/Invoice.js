@@ -31,35 +31,20 @@ const PreInvoice = (props) => {
     });
     e.preventDefault();
   };
-  const handleChangeInvoiceType = (e) => {
+
+  const handleChangeSimple = (e) => {
     setInvoiceType(e.target.value);
-  };
-  const handleChangeInvoiceID = (e) => {
     setInvoiceID(e.target.value);
-  };
-  const handleChangeTaxDate = (e) => {
     setTaxDate(e.target.value);
-  };
-  const handleChangeIssueDate = (e) => {
     setIssueDate(e.target.value);
-  };
-  const handleChangeSaleDate = (e) => {
     setSaleDate(e.target.value);
-  };
-  const handleChangeBuyerId = (e) => {
     setBuyerId(e.target.value);
-  };
-  const handleChangeBuyerName = (e) => {
     setBuyerName(e.target.value);
-  };
-  const handleChangeBuyerAdress = (e) => {
     setBuyerAdress(e.target.value);
-  };
-  const handleChangeGrossSale = (e) => {
     setGrossSale(e.target.value);
   };
-  const handleChangeSale23 = (e) => {
-    setSale23("");
+  const handleChangeCalculated = (e) => {
+    setSale23((grossSale * (100 / 123)).toFixed(3));
   };
 
   return (
@@ -70,14 +55,11 @@ const PreInvoice = (props) => {
             <div className="col s12">
               <div className="row">
                 <h2 className="col s12">Dane Faktury:</h2>
-                <InvoiceType
-                  value={invoiceType}
-                  change={handleChangeInvoiceType}
-                />
+                <InvoiceType value={invoiceType} change={handleChangeSimple} />
                 <div>
                   <InputMockup
                     value={invoiceID}
-                    change={handleChangeInvoiceID}
+                    change={handleChangeSimple}
                     name="invoiceID"
                     layout="col s6"
                     label="Numer faktury"
@@ -85,7 +67,7 @@ const PreInvoice = (props) => {
                   />
                   <InputMockup
                     value={taxDate}
-                    change={handleChangeTaxDate}
+                    change={handleChangeSimple}
                     name="taxDate"
                     layout="col s6"
                     label="Data obowiązku podatkowego"
@@ -93,7 +75,7 @@ const PreInvoice = (props) => {
                   />
                   <InputMockup
                     value={issueDate}
-                    change={handleChangeIssueDate}
+                    change={handleChangeSimple}
                     name="issueDate"
                     layout="col s6"
                     label="Data wystawienia"
@@ -101,7 +83,7 @@ const PreInvoice = (props) => {
                   />
                   <InputMockup
                     value={saleDate}
-                    change={handleChangeSaleDate}
+                    change={handleChangeSimple}
                     name="saleDate"
                     layout="col s6"
                     label="Data sprzedaży (wydanie towaru)"
@@ -117,7 +99,7 @@ const PreInvoice = (props) => {
             <h2 className="col s12">Dane Kontrahenta:</h2>
             <InputMockup
               value={buyerId}
-              change={handleChangeBuyerId}
+              change={handleChangeSimple}
               name="buyerId"
               layout="col s12"
               label="Numer identyfikacyjny"
@@ -125,14 +107,14 @@ const PreInvoice = (props) => {
             />
             <InputMockup
               value={buyerName}
-              change={handleChangeBuyerName}
+              change={handleChangeSimple}
               layout="col s12"
               label="Nazwa (imię i nazwisko)"
               markupId="7"
             />
             <InputMockup
               value={buyerAdress}
-              change={handleChangeBuyerAdress}
+              change={handleChangeSimple}
               layout="col s12"
               label="Adres (siedziba) "
               markupId="8"
@@ -144,7 +126,7 @@ const PreInvoice = (props) => {
             <h2 className="col s12">Sprzedaż udokumentowana</h2>
             <InputMockup
               value={grossSale}
-              change={handleChangeGrossSale}
+              change={handleChangeSimple}
               name="grossSale"
               layout="col s12"
               label="Wartość sprzedaży brutto"
@@ -154,7 +136,7 @@ const PreInvoice = (props) => {
           <div className="row">
             <InputMockup
               value={sale23}
-              change={handleChangeSale23}
+              change={handleChangeCalculated}
               name="sale23"
               layout="col s3"
               label="Sprzedaż wg stawki 23%"
