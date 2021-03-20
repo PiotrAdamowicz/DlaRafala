@@ -9,11 +9,11 @@ function inputMockup(props) {
           value={props.value}
           onChange={props.change}
           type="text"
-          id="date1"
+          id={props.name}
         />
 
         {props.markupId ? (
-          <label htmlFor="date1">
+          <label htmlFor={props.name}>
             <MarkupId markupId={props.markupId} />
             {props.label}:
           </label>

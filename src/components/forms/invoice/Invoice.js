@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import InputMockup from "../formElements/InputMockup";
+import InvoiceType from "./InvoiceType";
 
 const PreInvoice = (props) => {
   //FIXME: Mockup date to be removed
+  const [invoiceType, setInvoiceType] = useState("PRE");
   const [invoiceID, setInvoiceID] = useState("0000000001");
   const [taxDate, setTaxDate] = useState("11.11.1111");
   const [issueDate, setIssueDate] = useState("12.11.1111");
@@ -17,6 +19,7 @@ const PreInvoice = (props) => {
 
   const handleSubmit = (e) => {
     console.dir({
+      invoiceType,
       invoiceID,
       taxDate,
       issueDate,
@@ -28,7 +31,10 @@ const PreInvoice = (props) => {
     });
     e.preventDefault();
   };
-  const handleChangeInoiceID = (e) => {
+  const handleChangeInvoiceType = (e) => {
+    setInvoiceType(e.target.value);
+  };
+  const handleChangeInvoiceID = (e) => {
     setInvoiceID(e.target.value);
   };
   const handleChangeTaxDate = (e) => {
@@ -64,30 +70,40 @@ const PreInvoice = (props) => {
             <div className="col s12">
               <div className="row">
                 <h2 className="col s12">Dane Faktury:</h2>
-                <div className="col s6">
+                <InvoiceType
+                  value={invoiceType}
+                  change={handleChangeInvoiceType}
+                />
+                <div>
                   <InputMockup
                     value={invoiceID}
-                    change={handleChangeInoiceID}
+                    change={handleChangeInvoiceID}
+                    name="invoiceID"
+                    layout="col s6"
                     label="Numer faktury"
                     markupId="2"
                   />
                   <InputMockup
                     value={taxDate}
                     change={handleChangeTaxDate}
+                    name="taxDate"
+                    layout="col s6"
                     label="Data obowiązku podatkowego"
                     markupId="3"
                   />
-                </div>
-                <div className="col s6">
                   <InputMockup
                     value={issueDate}
                     change={handleChangeIssueDate}
+                    name="issueDate"
+                    layout="col s6"
                     label="Data wystawienia"
                     markupId="4"
                   />
                   <InputMockup
                     value={saleDate}
                     change={handleChangeSaleDate}
+                    name="saleDate"
+                    layout="col s6"
                     label="Data sprzedaży (wydanie towaru)"
                     markupId="5"
                   />

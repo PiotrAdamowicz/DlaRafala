@@ -1,10 +1,10 @@
 import "./App.css";
-import PreInvoice from "./components/forms/invoice/PreInvoice";
+import Invoice from "./components/forms/invoice/Invoice";
 
 function App() {
   return (
     <div className="App container">
-      <PreInvoice />
+      <Invoice />
     </div>
   );
 }
