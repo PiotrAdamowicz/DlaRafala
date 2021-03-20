@@ -32,16 +32,35 @@ const PreInvoice = (props) => {
     e.preventDefault();
   };
 
-  const handleChangeSimple = (e) => {
+  const handleChangeInvoiceType = (e) => {
     setInvoiceType(e.target.value);
+  };
+  const handleChangeInvoiceID = (e) => {
     setInvoiceID(e.target.value);
+  };
+  const handleChangeTaxDate = (e) => {
     setTaxDate(e.target.value);
+  };
+  const handleChangeIssueDate = (e) => {
     setIssueDate(e.target.value);
+  };
+  const handleChangeSaleDate = (e) => {
     setSaleDate(e.target.value);
+  };
+  const handleChangeBuyerId = (e) => {
     setBuyerId(e.target.value);
+  };
+  const handleChangeBuyerName = (e) => {
     setBuyerName(e.target.value);
+  };
+  const handleChangeBuyerAdress = (e) => {
     setBuyerAdress(e.target.value);
+  };
+  const handleChangeGrossSale = (e) => {
     setGrossSale(e.target.value);
+  };
+  const handleChangeSale23 = (e) => {
+    setSale23("");
   };
   const handleChangeCalculated = (e) => {
     setSale23((grossSale * (100 / 123)).toFixed(3));
@@ -55,11 +74,14 @@ const PreInvoice = (props) => {
             <div className="col s12">
               <div className="row">
                 <h2 className="col s12">Dane Faktury:</h2>
-                <InvoiceType value={invoiceType} change={handleChangeSimple} />
+                <InvoiceType
+                  value={invoiceType}
+                  change={handleChangeInvoiceType}
+                />
                 <div>
                   <InputMockup
                     value={invoiceID}
-                    change={handleChangeSimple}
+                    change={handleChangeInvoiceID}
                     name="invoiceID"
                     layout="col s6"
                     label="Numer faktury"
@@ -67,7 +89,7 @@ const PreInvoice = (props) => {
                   />
                   <InputMockup
                     value={taxDate}
-                    change={handleChangeSimple}
+                    change={handleChangeTaxDate}
                     name="taxDate"
                     layout="col s6"
                     label="Data obowiązku podatkowego"
@@ -75,7 +97,7 @@ const PreInvoice = (props) => {
                   />
                   <InputMockup
                     value={issueDate}
-                    change={handleChangeSimple}
+                    change={handleChangeIssueDate}
                     name="issueDate"
                     layout="col s6"
                     label="Data wystawienia"
@@ -83,7 +105,7 @@ const PreInvoice = (props) => {
                   />
                   <InputMockup
                     value={saleDate}
-                    change={handleChangeSimple}
+                    change={handleChangeSaleDate}
                     name="saleDate"
                     layout="col s6"
                     label="Data sprzedaży (wydanie towaru)"
@@ -99,7 +121,7 @@ const PreInvoice = (props) => {
             <h2 className="col s12">Dane Kontrahenta:</h2>
             <InputMockup
               value={buyerId}
-              change={handleChangeSimple}
+              change={handleChangeBuyerId}
               name="buyerId"
               layout="col s12"
               label="Numer identyfikacyjny"
@@ -107,14 +129,14 @@ const PreInvoice = (props) => {
             />
             <InputMockup
               value={buyerName}
-              change={handleChangeSimple}
+              change={handleChangeBuyerName}
               layout="col s12"
               label="Nazwa (imię i nazwisko)"
               markupId="7"
             />
             <InputMockup
               value={buyerAdress}
-              change={handleChangeSimple}
+              change={handleChangeBuyerAdress}
               layout="col s12"
               label="Adres (siedziba) "
               markupId="8"
@@ -126,7 +148,7 @@ const PreInvoice = (props) => {
             <h2 className="col s12">Sprzedaż udokumentowana</h2>
             <InputMockup
               value={grossSale}
-              change={handleChangeSimple}
+              change={handleChangeGrossSale}
               name="grossSale"
               layout="col s12"
               label="Wartość sprzedaży brutto"
