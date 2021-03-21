@@ -4,36 +4,32 @@ import InvoiceType from "./InvoiceType";
 import SaleType from "../formElements/SaleType";
 
 const PreInvoice = (props) => {
-  //FIXME: initial values of state need to be removed; for now only invoice Type need initial value(not empty string)
   const [invoiceType, setInvoiceType] = useState("PRE");
-  const [invoiceID, setInvoiceID] = useState("0000000001");
-  const [taxDate, setTaxDate] = useState("11.11.1111");
-  const [issueDate, setIssueDate] = useState("12.11.1111");
-  const [saleDate, setSaleDate] = useState("12.11.1111");
-  const [buyerId, setBuyerId] = useState("000001");
-  const [buyerName, setBuyerName] = useState("Jan Kowalski");
-  const [buyerAdress, setBuyerAddress] = useState(
-    "Malinowa 27, 15-120 Białystok"
-  );
-  const [grossSale, setGrossSale] = useState("");
-  const [netSale, setNetSale] = useState("");
-  const [sale23, setSale23] = useState("0");
-  const [salesType, setSaleType] = useState("23");
+  const [invoiceID, setInvoiceID] = useState();
+  const [taxDate, setTaxDate] = useState();
+  const [issueDate, setIssueDate] = useState();
+  const [saleDate, setSaleDate] = useState();
+  const [buyerId, setBuyerId] = useState();
+  const [buyerName, setBuyerName] = useState();
+  const [buyerAdress, setBuyerAddress] = useState();
+  const [grossSale, setGrossSale] = useState();
+  const [netSale, setNetSale] = useState();
+  const [sale23, setSale23] = useState();
+  const [sale08, setSale08] = useState();
+  const [sale05, setSale05] = useState();
+  const [saleType, setSaleType] = useState();
+  const [tax23, setTax23] = useState();
+  const [tax08, setTax08] = useState();
+  const [tax05, setTax05] = useState();
 
+  //TODO: model object of Output
   const handleSubmit = (e) => {
-    console.dir({
-      invoiceType,
-      invoiceID,
-      taxDate,
-      issueDate,
-      saleDate,
-      buyerId,
-      buyerName,
-      buyerAdress,
-      grossSale,
-      netSale,
-      salesType,
-    });
+    const form = {
+      invoiceData: { invoiceType, invoiceID, taxDate, issueDate, saleDate },
+      buyerData: { buyerId, buyerName, buyerAdress },
+      saleData: { grossSale, netSale, saleType },
+    };
+    console.dir({ form });
     e.preventDefault();
   };
 
@@ -64,17 +60,165 @@ const PreInvoice = (props) => {
   const handleChangeBuyerAdress = (e) => {
     setBuyerAddress(e.target.value);
   };
-  const handleChangeGrossSale = (e) => {
-    setGrossSale(e.target.value);
-  };
-  const handleChangeSale23 = (e) => {
-    setSale23("");
-  };
+  // const handleChangeGrossSale = (e) => {
+  //   setGrossSale(e.target.value);
+  // };
+  // const handleChangeSale23 = (e) => {
+  //   setSale23("");
+  // };
 
   //Calculated inputs, for esthetic purposes fixed to 3 decimals.
   const handleChangeCalculated = (e) => {
-    // setGrossSale(e.target.value);
-    // setSale23((grossSale * (100 / 123)).toFixed(3));
+    //FIXME: this needs work: on intial render ther's no rendered saleInput inputs and gross value; after input and change of saleType there's no state clean up; Generally needs some broader view;
+    let sale = parseFloat(e.target.value);
+
+    if (isNaN(sale)) {
+      sale = 0;
+    }
+    setNetSale(sale);
+    let gross = 0;
+    switch (saleType) {
+      case "23":
+        gross = sale * 0.23 + sale;
+        setGrossSale(gross);
+        setSale23(gross);
+        setTax23(sale * 0.23);
+        break;
+      case "8":
+        gross = sale * 0.08 + sale;
+        setGrossSale(gross);
+        setSale08(gross);
+        setTax08(sale * 0.08);
+        break;
+      case "5":
+        gross = sale * 0.05 + sale;
+        setGrossSale(gross);
+        setSale05(gross);
+        setTax05(sale * 0.05);
+        break;
+      default:
+        setGrossSale(gross);
+        break;
+    }
+  };
+
+  const saleInput = (type) => {
+    switch (type) {
+      case "23":
+        return (
+          <>
+            <InputMockup
+              value={sale23}
+              name="sale23"
+              layout="col s3"
+              label="Sprzedaż wg stawki 23%"
+              markupId="10"
+            />
+            <InputMockup
+              value={tax23}
+              name="tax23"
+              layout="col s3 push-s1"
+              label="VAT:"
+              markupId="11"
+            />
+          </>
+        );
+        break;
+      case "8":
+        return (
+          <>
+            <InputMockup
+              value={sale08}
+              name="sale08"
+              layout="col s3"
+              label="Sprzedaż wg stawki 8%"
+              markupId="12"
+            />
+            <InputMockup
+              value={tax08}
+              name="tax08"
+              layout="col s3 push-s1"
+              markupId="13"
+            />
+          </>
+        );
+        break;
+      case "5":
+        return (
+          <>
+            <InputMockup
+              value={sale05}
+              name="sale05"
+              layout="col s3"
+              label="Sprzedaż wg stawki 5%"
+              markupId="14"
+            />
+            <InputMockup
+              value={tax05}
+              name="tax05"
+              layout="col s3 push-s1"
+              markupId="15"
+            />
+          </>
+        );
+        break;
+      case "domestic":
+        return (
+          <InputMockup
+            layout="col s3"
+            label="Sprzedaż krajowa 0%"
+            markupId="16"
+          />
+        );
+        break;
+      case "export":
+        return <InputMockup layout="col s3" label="Eksport 0%" markupId="17" />;
+        break;
+      case "wdt":
+        return <InputMockup layout="col s3" label="WDT 0%" markupId="18" />;
+        break;
+      case "wsu":
+        return <InputMockup layout="col s3" label="WŚU" markupId="18" />;
+        break;
+      case "exempt":
+        return (
+          <InputMockup
+            layout="col s3"
+            label="Sprzedaż zwolniona"
+            markupId="19"
+          />
+        );
+        break;
+      case "reverse":
+        return (
+          <InputMockup
+            layout="col s3"
+            label="Odwrotne obciążenie"
+            markupId="20"
+          />
+        );
+        break;
+      default:
+        return (
+          <>
+            <InputMockup
+              value={sale23}
+              name="sale23"
+              layout="col s3"
+              label="Sprzedaż wg stawki 23%"
+              markupId="10"
+            />
+            <InputMockup
+              value={tax23}
+              name="tax23"
+              layout="col s3 push-s1"
+              label="VAT:"
+              markupId="11"
+            />
+          </>
+        );
+        break;
+    }
   };
 
   return (
@@ -155,101 +299,42 @@ const PreInvoice = (props) => {
           </div>
         </section>
         <section className="sell-info">
-          <h2 className="col s12">Sprzedaż udokumentowana</h2>
           <div className="row">
-            <InputMockup
-              value={netSale}
-              change={handleChangeCalculated}
-              name="netSale"
-              layout="col s12"
-              label="Wartość sprzedaży netto"
-              markupId="9"
-            />
-          </div>
-          <div className="row">
-            <InputMockup
-              value={grossSale}
-              change={handleChangeCalculated}
-              name="grossSale"
-              layout="col s12"
-              label="Wartość sprzedaży brutto"
-              markupId="9"
-            />
-          </div>
-          <div className="row">
-            <SaleType change={handleChangeSaleType} />
-          </div>
-          <div className="row">
-            <InputMockup
-              value={sale23}
-              change={handleChangeCalculated}
-              name="sale23"
-              layout="col s3"
-              label="Sprzedaż wg stawki 23%"
-              markupId="10"
-            />
-            <InputMockup layout="col s3 push-s1" markupId="11" />
-            <InputMockup layout="col s3 push-s2" />
-          </div>
-          <div className="row">
-            <InputMockup
-              layout="col s3"
-              label="Sprzedaż wg stawki 8%"
-              markupId="12"
-            />
-            <InputMockup layout="col s3 push-s1" markupId="13" />
-            <InputMockup layout="col s3 push-s2" />
-          </div>
-          <div className="row">
-            <InputMockup
-              layout="col s3"
-              label="Sprzedaż wg stawki 5%"
-              markupId="14"
-            />
-            <InputMockup layout="col s3 push-s1" markupId="15" />
-            <InputMockup layout="col s3 push-s2" />
-          </div>
-          <div className="row">
-            <InputMockup
-              layout="col s3"
-              label="Sprzedaż krajowa 0%"
-              markupId="16"
-            />
-          </div>
-          <div className="row">
-            <InputMockup layout="col s3" label="Eksport 0%" markupId="17" />
-          </div>
-          <div className="row">
-            <InputMockup layout="col s3" label="WDT 0%" markupId="18" />
-          </div>
-          <div className="row">
-            <InputMockup layout="col s3" label="WŚU" markupId="18" />
-          </div>
-          <div className="row">
-            <InputMockup
-              layout="col s3"
-              label="Sprzedaż zwolniona"
-              markupId="19"
-            />
-          </div>
-          <div className="row">
-            <InputMockup
-              layout="col s3"
-              label="Odwrotne obciążenie"
-              markupId="20"
-            />
+            <h2 className="col s12">Sprzedaż udokumentowana</h2>
+            <div className="row">
+              <InputMockup
+                value={netSale}
+                change={handleChangeCalculated}
+                name="netSale"
+                layout="col s12"
+                label="Wartość sprzedaży netto"
+                markupId="9"
+              />
+            </div>
+            <div className="row">
+              <InputMockup
+                value={grossSale}
+                name="grossSale"
+                layout="col s12"
+                label="Wartość sprzedaży brutto"
+                markupId="9"
+              />
+            </div>
+            <div className="row">
+              <SaleType change={handleChangeSaleType} />
+            </div>
+            <div className="row">{saleInput(saleType)}</div>
+
+            <div className="col s1">
+              <button type="submit" className="btn-large waves-effect">
+                Dodaj
+              </button>
+            </div>
+            <div className="col s1 push-s1">
+              <button className="btn-large waves-effect">Anuluj</button>
+            </div>
           </div>
         </section>
-        <div className="row">
-          <div className="col s1">
-            <button type="submit" className="btn-large waves-effect">
-              Dodaj
-            </button>
-          </div>
-          <div className="col s1 push-s1">
-            <button className="btn-large waves-effect">Anuluj</button>
-          </div>
-        </div>
       </form>
     </main>
   );
